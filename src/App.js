@@ -1,10 +1,27 @@
 import logo from './logo.svg';
+import {get, clear} from "./storage";
+import Home from "./home";
+import Dashboard from "./dashboard";
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+  let [session_user, setSessionUser] = useState(get("session_user"));
   return (
     <div className="App">
-      <header className="App-header">
+      {session_user ?
+        <Dashboard logout={() => {
+          clear();
+          setSessionUser(null);
+        }} />  
+        :
+        <Home 
+          handleOpenDashboard={user => {
+            setSessionUser(user);
+          }}
+        />
+      }
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -17,7 +34,7 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
     </div>
   );
 }
